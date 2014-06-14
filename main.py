@@ -1,12 +1,13 @@
 #!/usr/bin/python
-import event_handler
-import gui
-import entity_pool
 import pygame
 import sys
 
+import event_handler
+import gui
+import entity_pool
 
-def run(width=1200, height=800):
+
+def run(width=1920, height=1080):
     """Main run method"""
 
     pygame.init()

@@ -4,7 +4,7 @@ import pygame
 class Entity():
     """Class used to represent different data objects, differences defined by type string. (Subclasses?)"""
 
-    def __init__(self, surf, center, type="circle", radius=10):
+    def __init__(self, surf, center, type="circle", radius=80):
         self.surf = surf
         self.center = center
         self.pos = [center[0] - radius, center[1] - radius]

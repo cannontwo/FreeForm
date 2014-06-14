@@ -1,4 +1,5 @@
 import pygame
+
 import entity
 import main
 
@@ -6,6 +7,7 @@ import main
 class EventHandler():
     """Class responsible for reacting to events according to event type"""
     def __init__(self, pool):
+        pygame.key.set_repeat(250, 30)
         self.pool = pool
         self.mouse_down = False
 
@@ -22,6 +24,8 @@ class EventHandler():
                     main.clean_exit()
                 elif event.key == pygame.K_SPACE:
                     self.pool.get_selected().radius += 10
+                elif event.key == pygame.K_z and self.pool.get_selected().radius > 10:
+                    self.pool.get_selected().radius -= 10
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 center = event.pos

@@ -1,3 +1,5 @@
+import pygame
+
 import entity
 
 
@@ -15,7 +17,7 @@ class EntityPool():
         for loc_entity in self.entity_list:
             loc_entity.render(target_surf)
         if self.selected:
-            #TODO Once radius scaling is implemented, add code to highlight selected element
+            pygame.draw.circle(target_surf, (255, 102, 0), self.selected.center, self.selected.radius + 2)
             return
 
     def get_entities(self):
