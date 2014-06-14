@@ -12,6 +12,7 @@ class Entity():
         self.radius = radius
         self.vel = [0.0, 0.0]
         self.acc = [0.0, 0.0]
+        self.z_val = 0
 
     def update(self, delta):
         #Updates position
@@ -25,5 +26,3 @@ class Entity():
     def render(self, target_surf):
         assert isinstance(target_surf, pygame.Surface), "target_surf must be a Surface"
         target_surf.blit(pygame.transform.scale(self.surf, (self.radius * 2, self.radius * 2)), self.pos)
-
-    #TODO Add methods to allow for increasing and decreasing radius
