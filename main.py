@@ -14,6 +14,8 @@ def run(width=1920, height=1080):
     pygame.init()
 
     screen = pygame.display.set_mode((width, height))
+    pygame.display.toggle_fullscreen()
+
     clock = pygame.time.Clock()
     pool = entity_pool.EntityPool()
     box = text_box.TextBox(screen, pool)
@@ -28,8 +30,8 @@ def run(width=1920, height=1080):
 
         pool.update(delta)
         pool.render(screen)
-        outer_gui.render(screen)
         box.render()
+        outer_gui.render(screen)
 
         pygame.display.flip()
 
