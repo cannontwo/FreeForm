@@ -22,7 +22,7 @@ def run(width=1920, height=1080):
 
     #Main logic loop
     while 1:
-        screen.fill((137, 207, 240))
+        screen.fill((137, 207, 255))
         handler.handle(pygame.event.get())
         delta = clock.tick()
 

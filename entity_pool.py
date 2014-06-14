@@ -1,6 +1,5 @@
 import pygame
 import json
-import random
 
 import entity
 import text_box
@@ -39,6 +38,10 @@ class EntityPool():
     def remove_entity(self, thing):
         self.entity_list.remove(thing)
 
+        for item in self.connections.items():
+            if thing in item[1]:
+                self.connections.pop(item[0])
+
     def set_selected(self, thing):
         if self.selected:
             text_box.TextBox.global_box.set_string("")
@@ -57,6 +60,8 @@ class EntityPool():
             temp1 = {}
             temp1["text"] = thing.text
             temp1["children"] = [it.title for it in thing.connections if it.title != '']
+            temp1["center"] = [thing.center[0], thing.center[1]]
+            temp1["radius"] = thing.radius
             temp2[thing.title] = temp1
 
         with open(filepath, 'w') as write_file:
@@ -69,10 +74,11 @@ class EntityPool():
         test_surf = pygame.image.load('res/circle.png').convert_alpha()
 
         for key, val in temp.iteritems():
-            center = [random.randrange(0, 1920 - 160, 10), random.randrange(0, 1080 - 160, 10)]
+            center = val['center']
             temp_ent = entity.Entity(test_surf, center)
             temp_ent.title = key
             temp_ent.text = val['text']
+            temp_ent.radius = val['radius']
             temp_ent.connections = val['children']
             self.add_entity(temp_ent)
 
@@ -86,5 +92,6 @@ class EntityPool():
 
     def connect(self, ent1, ent2):
         self.connections[self.master_z] = (ent1, ent2)
+        self.master_z += 1
         ent1.connections.append(ent2)
         #ent2.connections.append(ent1)

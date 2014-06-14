@@ -33,6 +33,9 @@ class EventHandler():
                     self.pool.save()
                 elif event.key == pygame.K_l and event.mod == pygame.KMOD_LCTRL:
                     self.pool.load()
+                elif event.key == pygame.K_DELETE and self.pool.get_selected():
+                    self.pool.remove_entity(self.pool.get_selected())
+                    self.pool.set_selected(None)
                 elif event.key == pygame.K_TAB:
                     self.box.tab_switch()
                 elif event.key <= 127:
@@ -49,8 +52,6 @@ class EventHandler():
                                 self.pool.set_selected(temp_entity)
                             else:
                                 self.pool.set_selected(temp_entity)
-                                for i in range(0, len(self.selected) - 1):
-                                    self.pool.connect(self.selected[i], self.selected[i+1])
                                 self.selected = []
                             return
                     if self.pool.get_selected():
