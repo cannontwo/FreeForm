@@ -15,15 +15,16 @@ class Entity():
         self.z_val = 0
         self.text = ""
         self.title = ""
+        self.connections = []
 
     def update(self, delta):
         #Updates position
         self.pos = [self.center[0] - self.radius, self.center[1] - self.radius]
         modif = (float(delta) / float(1000))
-        self.pos[0] = int(float(self.pos[0]) + float(self.vel[0]) * modif)
-        self.pos[1] = int(float(self.pos[1]) + float(self.vel[1]) * modif)
-        self.vel[0] = int(float(self.vel[0]) + float(self.acc[0]) * modif)
-        self.vel[1] = int(float(self.vel[1]) + float(self.acc[1]) * modif)
+        # self.pos[0] = int(float(self.pos[0]) + float(self.vel[0]) * modif)
+        # self.pos[1] = int(float(self.pos[1]) + float(self.vel[1]) * modif)
+        # self.vel[0] = int(float(self.vel[0]) + float(self.acc[0]) * modif)
+        # self.vel[1] = int(float(self.vel[1]) + float(self.acc[1]) * modif)
 
     def render(self, target_surf):
         assert isinstance(target_surf, pygame.Surface), "target_surf must be a Surface"

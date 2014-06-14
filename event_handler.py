@@ -2,7 +2,6 @@ import pygame
 
 import entity
 import main
-import text_box
 
 
 class EventHandler():
@@ -11,7 +10,7 @@ class EventHandler():
         pygame.key.set_repeat(250, 30)
         self.pool = pool
         self.box = box
-        self.prev_mouse_down = 0
+        self.selected = []
 
     def handle(self, events):
         test_surf = pygame.image.load('res/circle.png').convert_alpha()
@@ -35,7 +34,7 @@ class EventHandler():
                 elif event.key == pygame.K_l and event.mod == pygame.KMOD_LCTRL:
                     self.pool.load()
                 elif event.key == pygame.K_TAB:
-                    text_box.TextBox.global_box.tab_switch()
+                    self.box.tab_switch()
                 elif event.key <= 127:
                     if self.pool.get_selected():
                         self.box.add_char(event.key)
@@ -44,17 +43,33 @@ class EventHandler():
                 if event.button == 1:
                     for temp_entity in sorted(self.pool.get_entities(), key=lambda temp_ent: temp_ent.z_val, reverse=True):
                         if pygame.Rect(temp_entity.pos, (temp_entity.radius * 2, temp_entity.radius * 2)).collidepoint(event.pos):
-                            self.pool.set_selected(temp_entity)
+                            if pygame.key.get_mods() & pygame.KMOD_LSHIFT and self.pool.get_selected():
+                                self.selected.append(temp_entity)
+                                self.pool.connect(self.pool.get_selected(), temp_entity)
+                                self.pool.set_selected(temp_entity)
+                            else:
+                                self.pool.set_selected(temp_entity)
+                                for i in range(0, len(self.selected) - 1):
+                                    self.pool.connect(self.selected[i], self.selected[i+1])
+                                self.selected = []
                             return
                     if self.pool.get_selected():
-                        text_box.TextBox.global_box.add_char(pygame.K_RETURN)
+                        self.box.add_char(pygame.K_RETURN)
                         self.pool.set_selected(None)
+                if event.button == 3:
+                    for temp_entity in sorted(self.pool.get_entities(), key=lambda temp_ent: temp_ent.z_val, reverse=True):
+                        if pygame.Rect(temp_entity.pos, (temp_entity.radius * 2, temp_entity.radius * 2)).collidepoint(event.pos):
+                            temp_entity.connections = []
+                            self.pool.set_selected(temp_entity)
 
             elif event.type == pygame.MOUSEMOTION:
                 if event.buttons[0]:
                     if self.pool.get_selected():
+                        for ent in self.pool.get_selected().connections:
+                            diff = [self.pool.get_selected().center[i] - ent.center[i] for i in range(len(ent.center))]
+                            ent.center = [event.pos[i] - diff[i] for i in range(len(ent.center))]
                         self.pool.get_selected().center = event.pos
-                        self.pool.get_selected().pos = [event.pos[0] - test_surf.get_width()/2, event.pos[1] - test_surf.get_height()/2]
+
                     else:
                         center = event.pos
                         temp = entity.Entity(test_surf, center)
