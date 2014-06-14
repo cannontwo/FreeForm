@@ -24,9 +24,8 @@ def run(width=1200, height=800):
         handler.handle(pygame.event.get())
         delta = clock.tick()
 
-        for entity in pool.get_entities():
-            entity.update(delta)
-            entity.render(screen)
+        pool.update(delta)
+        pool.render(screen)
         outer_gui.render(screen)
 
         pygame.display.flip()
