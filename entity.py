@@ -13,6 +13,8 @@ class Entity():
         self.vel = [0.0, 0.0]
         self.acc = [0.0, 0.0]
         self.z_val = 0
+        self.text = ""
+        self.title = ""
 
     def update(self, delta):
         #Updates position

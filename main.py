@@ -5,6 +5,7 @@ import sys
 import event_handler
 import gui
 import entity_pool
+import text_box
 
 
 def run(width=1920, height=1080):
@@ -15,12 +16,12 @@ def run(width=1920, height=1080):
     screen = pygame.display.set_mode((width, height))
     clock = pygame.time.Clock()
     pool = entity_pool.EntityPool()
-    handler = event_handler.EventHandler(pool)
+    box = text_box.TextBox(screen, pool)
+    handler = event_handler.EventHandler(pool, box)
     outer_gui = gui.Gui(width, height)
 
     #Main logic loop
     while 1:
-
         screen.fill((137, 207, 240))
         handler.handle(pygame.event.get())
         delta = clock.tick()
@@ -28,6 +29,7 @@ def run(width=1920, height=1080):
         pool.update(delta)
         pool.render(screen)
         outer_gui.render(screen)
+        box.render()
 
         pygame.display.flip()
 

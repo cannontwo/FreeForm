@@ -1,6 +1,7 @@
 import pygame
 
 import entity
+import text_box
 
 
 class EntityPool():
@@ -34,9 +35,12 @@ class EntityPool():
         self.entity_list.remove(thing)
 
     def set_selected(self, thing):
+        if self.selected:
+            text_box.TextBox.global_box.set_string("")
         if thing:
             thing.z_val = self.master_z
             self.master_z += 1
+            text_box.TextBox.global_box.set_string(thing.text)
         self.selected = thing
 
     def get_selected(self):

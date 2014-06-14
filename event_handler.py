@@ -6,9 +6,10 @@ import main
 
 class EventHandler():
     """Class responsible for reacting to events according to event type"""
-    def __init__(self, pool):
+    def __init__(self, pool, box):
         pygame.key.set_repeat(250, 30)
         self.pool = pool
+        self.box = box
         self.prev_mouse_down = 0
 
     def handle(self, events):
@@ -24,11 +25,15 @@ class EventHandler():
                     main.clean_exit()
                 elif event.key == pygame.K_SPACE:
                     self.pool.get_selected().radius += 10
-                elif event.key == pygame.K_z and self.pool.get_selected().radius > 10:
+                elif event.key == pygame.K_z and event.mod == pygame.KMOD_LCTRL and self.pool.get_selected().radius > 10:
                     self.pool.get_selected().radius -= 10
+                else:
+                    if self.pool.get_selected():
+                        self.box.add_char(event.key)
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
+
                     for temp_entity in sorted(self.pool.get_entities(), key=lambda temp_ent: temp_ent.z_val, reverse=True):
                         if pygame.Rect(temp_entity.pos, (temp_entity.radius * 2, temp_entity.radius * 2)).collidepoint(event.pos):
                             self.pool.set_selected(temp_entity)
