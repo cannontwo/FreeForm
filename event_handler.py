@@ -19,15 +19,21 @@ class EventHandler():
         for event in events:
 
             if event.type == pygame.QUIT:
+                self.pool.save()
                 main.clean_exit()
 
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
+                    self.pool.save()
                     main.clean_exit()
                 elif event.key == pygame.K_SPACE and event.mod == pygame.KMOD_LCTRL:
                     self.pool.get_selected().radius += 10
                 elif event.key == pygame.K_z and event.mod == pygame.KMOD_LCTRL and self.pool.get_selected().radius > 10:
                     self.pool.get_selected().radius -= 10
+                elif event.key == pygame.K_s and event.mod == pygame.KMOD_LCTRL:
+                    self.pool.save()
+                elif event.key == pygame.K_l and event.mod == pygame.KMOD_LCTRL:
+                    self.pool.load()
                 elif event.key == pygame.K_TAB:
                     text_box.TextBox.global_box.tab_switch()
                 elif event.key <= 127:
@@ -36,7 +42,6 @@ class EventHandler():
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-
                     for temp_entity in sorted(self.pool.get_entities(), key=lambda temp_ent: temp_ent.z_val, reverse=True):
                         if pygame.Rect(temp_entity.pos, (temp_entity.radius * 2, temp_entity.radius * 2)).collidepoint(event.pos):
                             self.pool.set_selected(temp_entity)
@@ -55,6 +60,3 @@ class EventHandler():
                         temp = entity.Entity(test_surf, center)
                         self.pool.add_entity(temp)
                         self.pool.set_selected(temp)
-
-            elif event.type == pygame.MOUSEBUTTONUP:
-                print "Button released"
