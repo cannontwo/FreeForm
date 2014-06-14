@@ -2,6 +2,7 @@ import pygame
 
 import entity
 import main
+import text_box
 
 
 class EventHandler():
@@ -23,11 +24,13 @@ class EventHandler():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     main.clean_exit()
-                elif event.key == pygame.K_SPACE:
+                elif event.key == pygame.K_SPACE and event.mod == pygame.KMOD_LCTRL:
                     self.pool.get_selected().radius += 10
                 elif event.key == pygame.K_z and event.mod == pygame.KMOD_LCTRL and self.pool.get_selected().radius > 10:
                     self.pool.get_selected().radius -= 10
-                else:
+                elif event.key == pygame.K_TAB:
+                    text_box.TextBox.global_box.tab_switch()
+                elif event.key <= 127:
                     if self.pool.get_selected():
                         self.box.add_char(event.key)
 
@@ -38,8 +41,9 @@ class EventHandler():
                         if pygame.Rect(temp_entity.pos, (temp_entity.radius * 2, temp_entity.radius * 2)).collidepoint(event.pos):
                             self.pool.set_selected(temp_entity)
                             return
-
-                    self.pool.set_selected(None)
+                    if self.pool.get_selected():
+                        text_box.TextBox.global_box.add_char(pygame.K_RETURN)
+                        self.pool.set_selected(None)
 
             elif event.type == pygame.MOUSEMOTION:
                 if event.buttons[0]:
